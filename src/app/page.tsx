@@ -1,37 +1,154 @@
-import Link from "next/link";
+"use client";
+
+import { useEffect, useState } from "react";
+import { MathJax, MathJaxContext } from "better-react-mathjax";
+
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js/auto";
+import * as math from "mathjs";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 export default function HomePage() {
+  const [expression, setExpression] = useState("");
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const derivativeInfo = (expression: string) => {
+    try {
+      const func = math.parse(expression);
+      const derivative = math.derivative(func, "x");
+
+      // Generate LaTeX for the derivative
+      const derivativeLatex = derivative
+        .toTex({ parenthesis: "auto" })
+        .replace(/\*1/g, "") // Remove unnecessary *1
+        .replace(/1\*/g, ""); // Remove unnecessary 1*
+
+      return {
+        derivative: derivative.toString(),
+        derivativeLatex: derivativeLatex,
+      };
+    } catch (error) {
+      // ... (error handling: return null or default values)
+      return {
+        derivative: null,
+        derivativeLatex: null,
+      };
+    }
+  };
+
+  const { derivative, derivativeLatex } = derivativeInfo(expression);
+
+  useEffect(() => {
+    if (!expression) {
+      return;
+    }
+    try {
+      const func = math.parse(expression);
+      const derivative = math.derivative(func, "x");
+
+      const newData: ChartData = {
+        labels: [],
+        datasets: [
+          {
+            label: expression,  // Label with the original function
+            data: [],
+            fill: false,
+            borderColor: "blue",
+            tension: 0.1,
+          },
+          {
+            label: derivative.toString(),
+            data: [],
+            fill: false,
+            borderColor: "rgb(75, 192, 192)", // Derivative color
+            tension: 0.1,
+          },
+        ],
+      };
+
+      for (let x = -10; x <= 10; x += 0.5) {
+        newData.labels.push(x);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        newData.datasets[0]?.data.push(func.evaluate({ x }));  // Original function values
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        newData.datasets[1]?.data.push(derivative.evaluate({ x }));
+      }
+      setChartData(newData);
+    } catch (error) {
+      console.error("Error evaluating expression:", error);
+      setChartData(null);
+    }
+  }, [expression]);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const expression = formData.get("expression") as string;
+    setExpression(expression);
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-        </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
-            </div>
-          </Link>
-          <Link
-            className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
-            </div>
-          </Link>
+    <main className="container mx-auto flex flex-grow flex-col gap-y-16">
+      <h1 className="mt-12 text-center text-4xl">Calculadora de Derivadas</h1>
+      <section className="flex flex-col">
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-2xl">
+            <label htmlFor="expression">Función</label>
+          </h2>
+          <div className="mt-4 flex">
+            <input type="text" name="expression" id="expression" />
+            <button className="ms-4">Derivar</button>
+          </div>
+          <div className="mt-2">
+            <span className="italic">Formato: 2x^2</span>
+          </div>
+        </form>
+      </section>
+      <section className="flex flex-col gap-y-4">
+        <h2 className="text-2xl">Resultados</h2>
+        <div>
+          <MathJaxContext>
+            <h3>Función</h3>
+            {expression && <MathJax>{`\\(${expression}\\)`}</MathJax>}
+            <h3 className="mt-4">Derivada</h3>
+            {derivativeLatex === "0" ? null : (
+              <MathJax>{`\\(${derivativeLatex}\\)`}</MathJax>
+            )}
+          </MathJaxContext>
         </div>
-      </div>
+        <div>
+          <h3>Representación gráfica</h3>
+          <div>{chartData && <Line data={chartData} />}</div>
+        </div>
+      </section>
     </main>
   );
 }
+
+type ChartData = {
+  labels: number[];
+  datasets: {
+    label: string;
+    data: number[];
+    fill: boolean;
+    borderColor: string;
+    tension: number;
+  }[];
+};
