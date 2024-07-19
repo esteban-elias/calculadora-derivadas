@@ -119,7 +119,7 @@ export default function HomePage() {
               type="text"
               name="expression"
               id="expression"
-              className="rounded"
+              className="rounded ps-2"
             />
             <button className="ms-4 rounded bg-slate-600 px-2 py-1 text-slate-100">
               Derivar
