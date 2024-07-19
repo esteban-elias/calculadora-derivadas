@@ -67,7 +67,7 @@ export default function HomePage() {
         labels: [],
         datasets: [
           {
-            label: expression,  // Label with the original function
+            label: expression, // Label with the original function
             data: [],
             fill: false,
             borderColor: "blue",
@@ -86,7 +86,7 @@ export default function HomePage() {
       for (let x = -10; x <= 10; x += 0.5) {
         newData.labels.push(x);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        newData.datasets[0]?.data.push(func.evaluate({ x }));  // Original function values
+        newData.datasets[0]?.data.push(func.evaluate({ x })); // Original function values
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         newData.datasets[1]?.data.push(derivative.evaluate({ x }));
       }
@@ -105,16 +105,25 @@ export default function HomePage() {
   }
 
   return (
-    <main className="container mx-auto flex flex-grow flex-col gap-y-16">
-      <h1 className="mt-12 text-center text-4xl">Calculadora de Derivadas</h1>
+    <main className="container mx-auto flex flex-grow flex-col gap-y-12">
+      <h1 className="mt-12 text-center text-4xl text-slate-900">
+        Calculadora de Derivadas
+      </h1>
       <section className="flex flex-col">
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl">
+          <h2 className="text-2xl text-slate-800">
             <label htmlFor="expression">Función</label>
           </h2>
           <div className="mt-4 flex">
-            <input type="text" name="expression" id="expression" />
-            <button className="ms-4">Derivar</button>
+            <input
+              type="text"
+              name="expression"
+              id="expression"
+              className="rounded"
+            />
+            <button className="ms-4 rounded bg-slate-600 px-2 py-1 text-slate-100">
+              Derivar
+            </button>
           </div>
           <div className="mt-2">
             <span className="italic">Formato: 2x^2</span>
@@ -122,7 +131,7 @@ export default function HomePage() {
         </form>
       </section>
       <section className="flex flex-col gap-y-4">
-        <h2 className="text-2xl">Resultados</h2>
+        <h2 className="text-2xl text-slate-800">Resultados</h2>
         <div>
           <MathJaxContext>
             <h3>Función</h3>
@@ -134,7 +143,9 @@ export default function HomePage() {
           </MathJaxContext>
         </div>
         <div>
-          <h3>Representación gráfica</h3>
+          <h2 className="mt-4 text-2xl text-slate-800">
+            Representación gráfica
+          </h2>
           <div>{chartData && <Line data={chartData} />}</div>
         </div>
       </section>
