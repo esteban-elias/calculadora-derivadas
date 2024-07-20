@@ -1,8 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MathJax, MathJaxContext } from "better-react-mathjax";
-
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -13,8 +10,11 @@ import {
   Title,
   Tooltip,
 } from "chart.js/auto";
+import "katex/dist/katex.min.css";
 import * as math from "mathjs";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
+import Latex from "react-latex-next";
 
 ChartJS.register(
   CategoryScale,
@@ -133,14 +133,12 @@ export default function HomePage() {
       <section className="flex flex-col gap-y-4">
         <h2 className="text-2xl text-slate-800">Resultados</h2>
         <div>
-          <MathJaxContext>
-            <h3>Función</h3>
-            {expression && <MathJax>{`\\(${expression}\\)`}</MathJax>}
-            <h3 className="mt-4">Derivada</h3>
-            {derivativeLatex === "0" ? null : (
-              <MathJax>{`\\(${derivativeLatex}\\)`}</MathJax>
-            )}
-          </MathJaxContext>
+          <h3>Función</h3>
+          {expression && <Latex>{`\\(${expression}\\)`}</Latex>}
+          <h3 className="mt-4">Derivada</h3>
+          {derivativeLatex === "0" ? null : (
+            <Latex>{`\\(${derivativeLatex}\\)`}</Latex>
+          )}
         </div>
         <div>
           <h2 className="mt-4 text-2xl text-slate-800">
