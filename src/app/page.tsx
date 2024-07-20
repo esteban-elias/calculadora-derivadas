@@ -15,6 +15,7 @@ import * as math from "mathjs";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import Latex from "react-latex-next";
+import Image from "next/image";
 
 ChartJS.register(
   CategoryScale,
@@ -106,9 +107,18 @@ export default function HomePage() {
 
   return (
     <main className="container mx-auto flex flex-grow flex-col gap-y-12">
-      <h1 className="mt-12 text-center text-4xl text-slate-900">
-        Calculadora de Derivadas
-      </h1>
+      <div className="mt-12 text-center">
+        <h1 className="inline-block text-4xl text-slate-900">
+          Calculadora de Derivadas
+          <Image
+            src="/logo.svg"
+            alt="Logo"
+            width={48}
+            height={48}
+            className="align-center ml-1 inline-block"
+          />
+        </h1>
+      </div>
       <section className="flex flex-col">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl text-slate-800">
