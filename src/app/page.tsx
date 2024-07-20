@@ -30,6 +30,7 @@ ChartJS.register(
 export default function HomePage() {
   const [expression, setExpression] = useState("x");
   const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [inputErrorMessage, setInputErrorMessage] = useState("");
   const derivativeInfo = (expression: string) => {
     try {
       const func = math.parse(expression);
@@ -102,11 +103,19 @@ export default function HomePage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const expression = formData.get("expression") as string;
+    const isValid = /^[0-9xX+\-*/^() ]+$/.test(expression);
+
+    if (!isValid) {
+      setInputErrorMessage("La función debe ser una variable x");
+      return;
+    } else {
+      setInputErrorMessage("");
+    }
     setExpression(expression.toLowerCase());
   }
 
   return (
-    <main className="container mx-auto flex flex-grow flex-col gap-y-12">
+    <main className="container mx-auto flex flex-grow flex-col gap-y-4">
       <div className="mt-12 text-center">
         <h1 className="inline-block text-4xl text-slate-800">
           Calculadora de Derivadas
@@ -119,7 +128,7 @@ export default function HomePage() {
           />
         </h1>
       </div>
-      <section className="flex flex-col">
+      <section className="flex flex-col mt-4">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl text-slate-600">
             <label htmlFor="expression">Función</label>
@@ -138,6 +147,13 @@ export default function HomePage() {
           <div className="mt-2">
             <span className="italic">Formato: 2x^2</span>
           </div>
+          <div className="mt-2 min-h-8">
+            {inputErrorMessage && (
+              <span className="text-xl font-semibold text-red-500">
+                {inputErrorMessage}
+              </span>
+            )}
+          </div>
         </form>
       </section>
       <section className="flex flex-col gap-y-4">
@@ -148,12 +164,10 @@ export default function HomePage() {
           <h3 className="mb-1 mt-4 font-medium">Derivada</h3>
           <Latex>{`\\(${derivativeLatex}\\)`}</Latex>
         </div>
-        <div>
-          <h2 className="mt-4 text-2xl text-slate-600">
-            Representación gráfica
-          </h2>
-          {chartData && <Line className="mt-2" data={chartData} />}
-        </div>
+      </section>
+      <section>
+        <h2 className="mt-4 text-2xl text-slate-600">Representación gráfica</h2>
+        {chartData && <Line className="mt-2" data={chartData} />}
       </section>
     </main>
   );
