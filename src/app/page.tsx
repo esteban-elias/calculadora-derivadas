@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 export default function HomePage() {
-  const [expression, setExpression] = useState("");
+  const [expression, setExpression] = useState("x");
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const derivativeInfo = (expression: string) => {
     try {
