@@ -101,7 +101,7 @@ export default function HomePage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const expression = formData.get("expression") as string;
-    setExpression(expression);
+    setExpression(expression.toLowerCase());
   }
 
   return (
