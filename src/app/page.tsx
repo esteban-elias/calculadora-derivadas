@@ -108,7 +108,7 @@ export default function HomePage() {
   return (
     <main className="container mx-auto flex flex-grow flex-col gap-y-12">
       <div className="mt-12 text-center">
-        <h1 className="inline-block text-4xl text-slate-900">
+        <h1 className="inline-block text-4xl text-slate-800">
           Calculadora de Derivadas
           <Image
             src="/logo.svg"
@@ -121,7 +121,7 @@ export default function HomePage() {
       </div>
       <section className="flex flex-col">
         <form onSubmit={handleSubmit}>
-          <h2 className="text-2xl text-slate-800">
+          <h2 className="text-2xl text-slate-600">
             <label htmlFor="expression">Función</label>
           </h2>
           <div className="mt-4 flex">
@@ -131,7 +131,7 @@ export default function HomePage() {
               id="expression"
               className="rounded ps-2"
             />
-            <button className="ms-4 rounded bg-slate-600 px-2 py-1 text-slate-100">
+            <button className="ms-4 rounded bg-slate-600 px-2 py-1 text-slate-100 hover:bg-slate-500 active:bg-slate-700">
               Derivar
             </button>
           </div>
@@ -141,20 +141,18 @@ export default function HomePage() {
         </form>
       </section>
       <section className="flex flex-col gap-y-4">
-        <h2 className="text-2xl text-slate-800">Resultados</h2>
+        <h2 className="text-2xl text-slate-600">Resultados</h2>
         <div>
-          <h3>Función</h3>
-          {expression && <Latex>{`\\(${expression}\\)`}</Latex>}
-          <h3 className="mt-4">Derivada</h3>
-          {derivativeLatex === "0" ? null : (
-            <Latex>{`\\(${derivativeLatex}\\)`}</Latex>
-          )}
+          <h3 className="mb-1 font-medium">Función</h3>
+          <Latex>{`\\(${expression}\\)`}</Latex>
+          <h3 className="mb-1 mt-4 font-medium">Derivada</h3>
+          <Latex>{`\\(${derivativeLatex}\\)`}</Latex>
         </div>
         <div>
-          <h2 className="mt-4 text-2xl text-slate-800">
+          <h2 className="mt-4 text-2xl text-slate-600">
             Representación gráfica
           </h2>
-          <div>{chartData && <Line data={chartData} />}</div>
+          {chartData && <Line className="mt-2" data={chartData} />}
         </div>
       </section>
     </main>

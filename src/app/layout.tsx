@@ -14,12 +14,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es" className={`${GeistSans.variable}`}>
-      <body className="px-4 sm:px-0 flex min-h-screen flex-col bg-slate-200 pb-24">
+      <body className="flex min-h-screen flex-col bg-gradient-to-r from-slate-100 to-blue-100 px-4 pb-24 sm:px-0">
         {children}
       </body>
     </html>
   );
 }
-
-// TODO: beggining graph
-// TODO: Validate input
