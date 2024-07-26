@@ -115,7 +115,7 @@ export default function HomePage() {
   }
 
   return (
-    <main className="container mx-auto flex flex-grow flex-col gap-y-4">
+    <main className="container mx-auto flex max-w-[60rem] flex-grow flex-col gap-y-4">
       <div className="mt-12 text-center">
         <h1 className="inline-block text-4xl text-slate-800">
           Calculadora de Derivadas
@@ -128,7 +128,7 @@ export default function HomePage() {
           />
         </h1>
       </div>
-      <section className="mt-16 flex flex-col">
+      <section className="mt-16 flex flex-col sm:self-center">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl text-slate-600">
             <label htmlFor="expression">Función</label>
