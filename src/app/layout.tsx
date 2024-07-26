@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
+import { Noto_Sans } from "next/font/google";
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+const notoSans = Noto_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-noto-sans",
+});
 
 export const metadata: Metadata = {
   title: "Calculadora de Derivadas",
@@ -13,7 +18,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${GeistSans.variable}`}>
+    <html lang="es" className={`${notoSans.variable}`}>
       <body className="flex min-h-screen flex-col bg-gradient-to-r from-slate-50 to-blue-200 px-4 pb-24">
         {children}
       </body>
