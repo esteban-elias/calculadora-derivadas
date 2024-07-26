@@ -128,7 +128,7 @@ export default function HomePage() {
           />
         </h1>
       </div>
-      <section className="flex flex-col mt-4">
+      <section className="mt-16 flex flex-col">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl text-slate-600">
             <label htmlFor="expression">Función</label>
