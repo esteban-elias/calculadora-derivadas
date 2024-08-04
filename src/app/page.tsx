@@ -85,7 +85,8 @@ export default function HomePage() {
         ],
       };
 
-      for (let x = -10; x <= 10; x += 2.5) {
+      const increment = window.innerWidth < 768 ? 2.5 : 1;
+      for (let x = -10; x <= 10; x += increment) {
         newData.labels.push(x);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         newData.datasets[0]?.data.push(func.evaluate({ x })); // Original function values
